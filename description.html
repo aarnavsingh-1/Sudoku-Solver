@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver Description</title>
+    <link rel="stylesheet" href="description.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Sudoku Solver Algorithm</h1>
+            <a href="index.html" class="back-button">Back to Home</a>
+        </div>
+    </header>
+    <main class="content">
+        <div class="container">
+            <section>
+                <h2>Algorithm Description</h2>
+                <p>The algorithm uses backtracking to solve the Sudoku puzzle. Here's how it works:</p>
+                <ol>
+                    <li><strong>Base Case:</strong> The algorithm begins by checking if it has reached the end of the grid. If it has, the puzzle is solved.</li>
+                    <li><strong>Cell Navigation:</strong> It moves through the grid one cell at a time. If a cell is already filled with a number, it skips to the next cell.</li>
+                    <li><strong>Trying Numbers:</strong> For an empty cell, the algorithm tries placing each number from 1 to 9 in that cell.</li>
+                    <li><strong>Safety Check:</strong> Before placing a number, it checks if the number is safe to place, meaning it doesn’t violate Sudoku’s rules for rows, columns, and the 3x3 subgrid.</li>
+                    <li><strong>Recursive Call:</strong> If a number is placed successfully, the algorithm recursively moves to the next cell. If this leads to a solution, it returns true.</li>
+                    <li><strong>Backtracking:</strong> If placing a number doesn't lead to a solution (i.e., if it causes a conflict later), the algorithm removes the number (backtracks) and tries the next possible number.</li>
+                    <li><strong>Exhausting Options:</strong> If all numbers from 1 to 9 are tried and none fit, the algorithm backtracks to the previous cell and tries a different number there.</li>
+                    <li><strong>Completion:</strong> The process continues until the entire grid is filled correctly, or the algorithm determines that the puzzle is unsolvable.</li>
+                </ol>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

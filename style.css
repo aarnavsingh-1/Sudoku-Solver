@@ -1,0 +1,234 @@
+
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 40px;
+    background-color: #007bff;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#name {
+    font-size: 60px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+#description-link {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+#description-link:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.Heading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bolder;
+    color: #333;
+    margin-top: 20px;
+}
+
+.message {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Base styles for the Sudoku grid */
+
+
+.bl {
+    border-left: 4px solid #000;
+}
+
+.bb {
+    border-bottom: 4px solid #000;
+}
+
+.br {
+    border-right: 4px solid #000;
+}
+
+.bt {
+    border-top: 4px solid #000;
+}
+.sudoku_grid {
+    display: grid;
+    grid-template-columns: repeat(9, 60px);
+    grid-template-rows: repeat(9, 60px);
+    gap: 2px;
+    margin: 10px auto;
+    max-width: 542px;
+}
+
+.sudoku_grid div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    color: #000;
+    font-size: 24px;
+    background-color: #fff;
+    border: 1px solid #000;
+    box-sizing: border-box;
+}
+
+
+/* Button styles */
+.Buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+#TrySolving,#SolvePuzzle {
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff; /* White text color */
+    font-weight: bold;
+    background-color: #007bff; /* Blue background color */
+    padding: 10px 35px;
+    font-size: 24px;
+    border: 1px solid #0056b3; /* Darker blue border color */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth color transition */
+    margin-right: 10px;
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+#TrySolving:hover,#SolvePuzzle:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #004094; /* Even darker border on hover */
+}
+
+.difficulty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.difficulty-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.difficulty-button {
+    background-color: #007bff; /* Blue background */
+    border: none;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.difficulty-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+#easy {
+    background-color: #28a745; /* Green for easy */
+}
+
+#medium {
+    background-color: #ffc107; /* Yellow for medium */
+}
+
+#hard {
+    background-color: #dc3545; /* Red for hard */
+}
+
+#random {
+    background-color: #17a2b8; /* Teal for random */
+}
+.confetti {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    color: #FFD700;
+    animation: confettiFall 2s ease-out;
+    z-index: 1000;
+}
+
+@keyframes confettiFall {
+    from {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translate(-50%, -100%) scale(0.5);
+        opacity: 0;
+    }
+}
+.invalid {
+    background-color: red;
+    color: white;
+}
+#timer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 24px; /* Increased font size */
+    font-weight: bold; /* Bold text */
+    color: #333; /* Darker text color for better readability */
+    background-color: #f8f9fa; /* Light background color for contrast */
+    padding: 10px; /* Add some padding */
+    border: 2px solid #007bff; /* Blue border to match the theme */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    display: inline-block; /* Inline-block to fit the content */
+    text-align: center; /* Center-align text */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for color changes */
+}
+
+#timer:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+    color: #007bff; /* Change text color to blue on hover */
+}
+.pre-filled {
+    background-color: lightblue;
+}
+.solved {
+    background-color: #fff; /* White for solved cells */
+    color: black; /* Black text for solved cells */
+}
+
