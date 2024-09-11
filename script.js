@@ -7,9 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let timerInterval;
     let startTime;
     let isSolving = false;
-  
+
     let solvebuttonclick = false;
     let initialBoard = []; // To keep track of initial puzzle
+
+    let globalintial = [];
+   
+    // Prewarm the API when the page loads
+    const prewarmApi = () => {
+        fetch(`${baseUrl}?difficulty=easy`)
+            .then(response => response.json())
+            .then(data => {
+               //console.log('API warmed up', data);
+               
+            })
+            .catch(err => console.log('Error warming up API:', err));
+    };
 
     const startTimer = () => {
         startTime = Date.now();
@@ -31,33 +44,30 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const celebrateCompletion = () => {
-        
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.textContent = 'Puzzle is Solved!';
-            document.body.appendChild(confetti);
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.textContent = 'Puzzle is Solved!';
+        document.body.appendChild(confetti);
 
-            setTimeout(() => {
-                document.body.removeChild(confetti);
-            }, 3000);
-        
+        setTimeout(() => {
+            document.body.removeChild(confetti);
+        }, 3000);
     };
-let globalintial=[];
+
     const fetchSudoku = (difficulty) => {
         let url = `${baseUrl}?difficulty=${difficulty}`;
-        
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 initialBoard = data.board;
-                 // Store the initial puzzle
-               globalintial=initialBoard;
-                populateGrid(initialBoard);
                 
+                globalintial = initialBoard;
+                populateGrid(initialBoard);
             })
             .catch(error => console.error('Error fetching Sudoku puzzle:', error));
     };
-
+   
+    
     const populateGrid = (board) => {
         sudokuGrid.innerHTML = '';
 
@@ -74,11 +84,9 @@ let globalintial=[];
 
                 cellDiv.textContent = cell !== 0 ? cell : '';
 
-                // Apply styling based on whether the cell was pre-filled or a solution
-                if (cell !== 0 && !globalintial[rowIndex][cellIndex]==0) {
+                if (cell !== 0 && !globalintial[rowIndex][cellIndex] == 0) {
                     cellDiv.classList.add('pre-filled');
-                     // Add a class for pre-filled cells
-                    cellDiv.style.color = 'blue'; // Change color for pre-filled cells
+                    cellDiv.style.color = 'blue';
                 } else {
                     cellDiv.setAttribute('contenteditable', 'true');
                     cellDiv.classList.add('editable');
@@ -89,6 +97,11 @@ let globalintial=[];
             });
         });
     };
+    //inital configuration before setting difficulty
+    initialBoard = [[0,1,0,0,0,0,6,0,0],[0,0,0,0,0,0,3,0,8],[0,8,0,3,4,0,1,0,5],[0,0,3,0,5,7,0,6,9],[4,0,0,0,9,0,0,1,3],[8,0,0,6,0,0,0,5,4],[5,3,0,7,0,4,0,0,2],[6,4,0,9,0,2,5,0,1],[0,7,0,0,8,0,4,0,0]];
+                
+    globalintial = initialBoard;
+    populateGrid(initialBoard);
     const checkIfPuzzleIsSolved = (board) => {
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
@@ -99,57 +112,45 @@ let globalintial=[];
         }
         return true;
     };
-    
+
     const validateInput = (cellDiv, rowIndex, cellIndex, board) => {
         const value = cellDiv.textContent.trim();
-        
-        // Check if solving mode is enabled
+
         if (!isSolving) {
             cellDiv.textContent = '';
-            cellDiv.style.backgroundColor = ''; 
-            // Reset color when editing is disabled
-            
+            cellDiv.style.backgroundColor = '';
             return;
         }
 
-        // Check if the input is empty
         if (value === '') {
             cellDiv.style.backgroundColor = '';
-            board[rowIndex][cellIndex]=0;
-            
+            board[rowIndex][cellIndex] = 0;
             return;
         }
 
-        // Validate numeric input
         const num = parseInt(value, 10);
-        board[rowIndex][cellIndex]=num;
-       // console.log(board[rowIndex][cellIndex]);
-        
+        board[rowIndex][cellIndex] = num;
+
         if (isNaN(num) || num < 1 || num > 9) {
             cellDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
-            
         } else {
             const isValid = isboardSafe(board, rowIndex, cellIndex, num);
             if (isValid) {
                 cellDiv.style.backgroundColor = '';
                 if (checkIfPuzzleIsSolved(board)) {
-                    stopTimer();  // Stop the timer
-                    celebrateCompletion();  // Trigger celebration
-                    isSolving = false;  // Disable further editing
+                    stopTimer();
+                    celebrateCompletion();
+                    isSolving = false;
                 }
-                
-                
             } else {
                 cellDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
             }
         }
-        
-        
     };
 
     const isSafe = (board, row, col, num) => {
         for (let x = 0; x < 9; x++) {
-            if (board[row][x] === num ) return false;
+            if (board[row][x] === num) return false;
         }
 
         for (let x = 0; x < 9; x++) {
@@ -168,18 +169,18 @@ let globalintial=[];
 
     const isboardSafe = (board, row, col, num) => {
         for (let x = 0; x < 9; x++) {
-            if (board[row][x] === num && x!==col ) return false;
+            if (board[row][x] === num && x !== col) return false;
         }
 
         for (let x = 0; x < 9; x++) {
-            if (board[x][col] === num && x!==row) return false;
+            if (board[x][col] === num && x !== row) return false;
         }
 
-        const startRow = Math.floor(row/3)*3;
-        const startCol = Math.floor(col/3)*3;
-        for (let r = startRow; r < (startRow + 3); r++) {
-            for (let d = startCol; d < (startCol + 3); d++) {
-                if (board[r][d] === num && !(r===row && d===col)) return false;
+        const startRow = Math.floor(row / 3) * 3;
+        const startCol = Math.floor(col / 3) * 3;
+        for (let r = startRow; r < startRow + 3; r++) {
+            for (let d = startCol; d < startCol + 3; d++) {
+                if (board[r][d] === num && !(r === row && d === col)) return false;
             }
         }
         return true;
@@ -223,12 +224,9 @@ let globalintial=[];
         }
 
         if (solveSudoku(board)) {
-            populateGrid(board); // Ensure grid is populated with correct colors
-            stopTimer(); // Ensure timer stops when solved
-            celebrateCompletion(); 
-          // if(isboardSafe)console.log('done');
-           
-            
+            populateGrid(board);
+            stopTimer();
+            celebrateCompletion();
         } else {
             alert('No solution exists');
         }
@@ -238,15 +236,13 @@ let globalintial=[];
         resetTimer();
         startTimer();
         isSolving = true;
-       
     };
-    
+
     const handleDifficultyClick = (difficulty) => {
         fetchSudoku(difficulty);
         resetTimer();
         isSolving = false;
-       
-        solvebuttonclick = false; // Reset flag for new puzzle
+        solvebuttonclick = false;
     };
 
     document.getElementById('easy').addEventListener('click', () => handleDifficultyClick('easy'));
@@ -254,19 +250,15 @@ let globalintial=[];
     document.getElementById('hard').addEventListener('click', () => handleDifficultyClick('hard'));
     document.getElementById('random').addEventListener('click', () => handleDifficultyClick('random'));
 
-    if (solveButton) {
-        solveButton.addEventListener('click', handleSolveClick);
-    }
+    solveButton.addEventListener('click', handleSolveClick);
+    trySolvingButton.addEventListener('click', handleTrySolvingClick);
 
-    if (trySolvingButton) {
-        trySolvingButton.addEventListener('click', handleTrySolvingClick);
-    }
+    prewarmApi(); // Call the prewarm function when the page loads
 });
 
 function navigateToDescription() {
     window.location.href = 'description.html';
 }
-
 
 
 
